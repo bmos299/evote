@@ -6,7 +6,7 @@ const path = require('path');
 const fs = require('fs');
 
 //connect to the config file
-const configPath = path.join(process.cwd(), './config.json');
+const configPath = path.join(process.cwd(), './config/config.json');
 const configJSON = fs.readFileSync(configPath, 'utf8');
 const config = JSON.parse(configJSON);
 let connection_file = config.connection_file;
@@ -16,7 +16,7 @@ let appAdmin = config.appAdmin;
 let orgMSPID = config.orgMSPID;
 
 // connect to the connection file
-const ccpPath = path.join(process.cwd(), connection_file);
+const ccpPath = path.join(process.cwd(), './config/ibpConnection.json');
 const ccpJSON = fs.readFileSync(ccpPath, 'utf8');
 const ccp = JSON.parse(ccpJSON);
 
