@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: evote-server-deployment
+  labels:
+    app: evote-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: evote-server
+  template:
+    metadata:
+      labels:
+        app: evote-server
+    spec:
+      containers:
+      - name: evoteserver
+        image: us.icr.io/evote/evote  
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8081
+        command: ["sh"]
+        args: ["-c", "cd server && npm i && node enrollAdmin.js && npm start"]
+        volumeMounts:
+        - name: config
+          mountPath: "/app/server/config/"
+      imagePullSecrets:
+      - name: evote-us-icr-io
+      volumes:
+      - name: config
+        configMap:
+          name: configuration
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: evote-client-deployment
+  labels:
+    app: evote-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: evote-client
+  template:
+    metadata:
+      labels:
+        app: evote-client
+    spec:
+      containers:
+      - name: evoteclient
+        image: us.icr.io/evote/evote
+        imagePullPolicy: Always
+        env:
+        - name: VUE_APP_API_PORT
+          value: "30008"
+        - name: VUE_APP_API_HOST
+          value: "52.117.161.89"
+        ports:
+        - containerPort: 8080
+        command: ["sh"]
+        args: ["-c", "cd client && npm i && npm run serve"]
+        volumeMounts:
+        - name: assets
+          mountPath: "/app/client/src/assets"
+        - name: images
+          mountPath: "/app/client/public/images"  
+      imagePullSecrets:
+      - name: evote-us-icr-io
+      volumes:
+      - name: assets 
+        configMap:
+          name: assets
+      - name: images
+        configMap:
+          name: images  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: evote-server-service
+spec:
+  selector:
+    app: evote-server
+  ports:
+    - protocol: TCP
+      port: 8081
+      nodePort: 30008
+      targetPort: 8081
+  type: NodePort  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: evote-client-service
+spec:
+  selector:
+    app:  evote-client
+  ports:
+    - protocol: TCP
+      port: 8080
+      nodePort: 30007
+      targetPort: 8080
+  type: NodePort      
+
