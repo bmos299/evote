@@ -61,20 +61,8 @@ spec:
         - containerPort: 8080
         command: ["sh"]
         args: ["-c", "cd client && npm i && npm run serve"]
-        volumeMounts:
-        - name: assets
-          mountPath: "/app/client/src/assets"
-        - name: images
-          mountPath: "/app/client/public/images"  
       imagePullSecrets:
       - name: evote-us-icr-io
-      volumes:
-      - name: assets 
-        configMap:
-          name: assets
-      - name: images
-        configMap:
-          name: images  
 ---
 apiVersion: v1
 kind: Service
