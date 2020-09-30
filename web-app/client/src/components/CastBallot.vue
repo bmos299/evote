@@ -5,16 +5,16 @@
     <label for="one">Donald Trump (Republican)</label>
     <br>
     <input type="radio" id="two" value="Democrat" v-model="picked">
-    <label for="two">Mark Parzygnat (Democratic)</label>
+    <label for="two">Joe Biden (Democratic)</label>
     <br>
     <input type="radio" id="two" value="Green" v-model="picked">
-    <label for="two">Heran Shah (Green Party)</label>
+    <label for="two">NA (Green Party)</label>
     <br>
     <input type="radio" id="two" value="Independent" v-model="picked">
-    <label for="two">Barry Mosakowski (Independent)</label>
+    <label for="two">NA (Independent)</label>
     <br>
     <input type="radio" id="two" value="Libertarian" v-model="picked">
-    <label for="two">Jorge Rodriguez (Libertarian)</label>
+    <label for="two">NA (Libertarian)</label>
     <br>
     <br>
     <span v-if="picked">
